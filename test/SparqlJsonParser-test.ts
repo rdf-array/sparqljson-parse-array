@@ -550,4 +550,38 @@ describe('SparqlJsonParser', () => {
       return expect(parser.parseJsonBooleanStream(errorStream)).rejects.toBeTruthy();
     });
   });
+
+  describe('RDF- sequences', () => {
+    const parser = new SparqlJsonParser();
+
+    it('should convert a seq binding to a sequence term, nested ones included', () => {
+      return expect(parser.parseJsonBindings({
+        list: {
+          type: 'seq',
+          value: [
+            { type: 'uri', value: 'http://example.org/a' },
+            { type: 'literal', value: '1', datatype: 'http://www.w3.org/2001/XMLSchema#integer' },
+            { type: 'seq', value: [ { type: 'bnode', value: 'b' } ] },
+            { type: 'seq', value: [] },
+          ],
+        },
+      })).toEqual({
+        list: DF.sequence([
+          DF.namedNode('http://example.org/a'),
+          DF.literal('1', DF.namedNode('http://www.w3.org/2001/XMLSchema#integer')),
+          DF.sequence([ DF.blankNode('b') ]),
+          DF.sequence([]),
+        ]),
+      });
+    });
+
+    it('should reject a seq whose value is not an array', () => {
+      return expect(() => parser.parseJsonValue({ type: 'seq', value: 'x' })).toThrow('Invalid sequence');
+    });
+
+    it('should reject a data factory without sequence()', () => {
+      const noSequences = new SparqlJsonParser({ dataFactory: <any> { namedNode: DF.namedNode.bind(DF) } });
+      return expect(() => noSequences.parseJsonValue({ type: 'seq', value: [] })).toThrow('RDF- needs rdf-data-factory-array');
+    });
+  });
 });

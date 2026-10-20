@@ -1,3 +1,16 @@
+<img src=".github/rdf-array-logo.png" alt="[sparqljson-parse]" width="96" align="right">
+
+# sparqljson-parse-array: sparqljson-parse for RDF-
+
+**RDF-** fork of [sparqljson-parse](https://github.com/rubensworks/sparqljson-parse.js): a binding
+`{"type": "seq", "value": [ … ]}`, the SPARQL Results JSON spelling of a **sequence** term that
+[jena-array](https://github.com/rdf-array/jena-array) and [comunica-array](https://github.com/rdf-array/comunica-array)
+write, is parsed into `dataFactory.sequence(elements)` (`termType: "Sequence"`), its elements being parsed
+recursively, so sequences nest and may hold triple terms. The data factory must provide `sequence()`, as
+[rdf-data-factory-array](https://github.com/rdf-array/rdf-data-factory-array) does.
+Part of the [comunica-array](https://github.com/rdf-array/comunica-array) stack, whose doc/rdf-array.md lists the
+sibling forks.
+
 # SPARQL-Results+JSON Parse
 
 [![Build status](https://github.com/rubensworks/sparqljson-parse.js/workflows/CI/badge.svg)](https://github.com/rubensworks/sparqljson-parse.js/actions?query=workflow%3ACI)
