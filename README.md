@@ -1,6 +1,6 @@
 <img src=".github/rdf-array-logo.png" alt="[sparqljson-parse]" width="96" align="right">
 
-# sparqljson-parse-array: sparqljson-parse for RDF-
+# sparqljson-parse-array: sparqljson-parse for rdf-array
 
 **RDF-** fork of [sparqljson-parse](https://github.com/rubensworks/sparqljson-parse.js): a binding
 `{"type": "seq", "value": [ … ]}`, the SPARQL Results JSON spelling of a **sequence** term that

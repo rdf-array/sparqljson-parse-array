@@ -153,12 +153,12 @@ class SparqlJsonParser {
                 value = this.dataFactory.quad(this.parseJsonValue(tripleValue.subject), this.parseJsonValue(tripleValue.predicate), this.parseJsonValue(tripleValue.object));
                 break;
             case 'seq': {
-                // RDF-: a sequence term, spelled as the JSON array of its elements (as jena-array and comunica-array write it)
+                // rdf-array: a sequence term, spelled as the JSON array of its elements (as jena-array and comunica-array write it)
                 if (!Array.isArray(rawValue.value)) {
                     throw new Error(`Invalid sequence: ${JSON.stringify(rawValue)}`);
                 }
                 if (!this.dataFactory.sequence) {
-                    throw new Error('The data factory has no sequence(): RDF- needs rdf-data-factory-array');
+                    throw new Error('The data factory has no sequence(): rdf-array needs rdf-data-factory-array');
                 }
                 value = this.dataFactory.sequence(rawValue.value.map((element) => this.parseJsonValue(element)));
                 break;

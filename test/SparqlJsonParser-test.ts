@@ -551,7 +551,7 @@ describe('SparqlJsonParser', () => {
     });
   });
 
-  describe('RDF- sequences', () => {
+  describe('rdf-array sequences', () => {
     const parser = new SparqlJsonParser();
 
     it('should convert a seq binding to a sequence term, nested ones included', () => {
@@ -581,7 +581,7 @@ describe('SparqlJsonParser', () => {
 
     it('should reject a data factory without sequence()', () => {
       const noSequences = new SparqlJsonParser({ dataFactory: <any> { namedNode: DF.namedNode.bind(DF) } });
-      return expect(() => noSequences.parseJsonValue({ type: 'seq', value: [] })).toThrow('RDF- needs rdf-data-factory-array');
+      return expect(() => noSequences.parseJsonValue({ type: 'seq', value: [] })).toThrow('rdf-array needs rdf-data-factory-array');
     });
   });
 });
