@@ -8,6 +8,10 @@
 write, is parsed into `dataFactory.sequence(elements)` (`termType: "Sequence"`), its elements being parsed
 recursively, so sequences nest and may hold triple terms. The data factory must provide `sequence()`, as
 [rdf-data-factory-array](https://github.com/rdf-array/rdf-data-factory-array) does.
+
+**rdf-undef** (branch `rdf-undef`, [rdf-undef.md](https://github.com/rdf-array/rdf-array/blob/rdf-undef/docs/rdf-undef.md)):
+`{"type": "undef"}` as a member of a `seq`'s value is `dataFactory.undef()`; anywhere else it is an error. Status: done, tests in
+`test/SparqlJsonParser-test.ts`.
 Part of the [comunica-array](https://github.com/rdf-array/comunica-array) stack, whose doc/rdf-array.md lists the
 sibling forks.
 

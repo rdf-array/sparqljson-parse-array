@@ -551,6 +551,34 @@ describe('SparqlJsonParser', () => {
     });
   });
 
+  describe('rdf-undef slots', () => {
+    const parser = new SparqlJsonParser();
+
+    it('should read { "type": "undef" } as a member of a seq, at any depth', () => {
+      const one = { type: 'literal', value: '1' };
+      const bindings = <any> parser.parseJsonBindings({
+        v: { type: 'seq', value: [ one, { type: 'undef' }, { type: 'seq', value: [ { type: 'undef' } ] } ] },
+      });
+      expect(bindings.v.equals(DF.sequence([
+        DF.literal('1'), DF.undef(), DF.sequence([ DF.undef() ]),
+      ]))).toBe(true);
+    });
+
+    it('should refuse it as the value of a binding or a triple component', () => {
+      expect(() => parser.parseJsonBindings({ v: { type: 'undef' } })).toThrow('Found undef outside a sequence');
+      expect(() => parser.parseJsonBindings({ v: { type: 'triple', value: {
+        subject: { type: 'uri', value: 'ex:s' }, predicate: { type: 'uri', value: 'ex:p' }, object: { type: 'undef' },
+      } } })).toThrow('Found undef outside a sequence');
+    });
+
+    it('should need a data factory with undef()', () => {
+      const factory = <any> { sequence: () => null, undef: undefined };
+      const noUndef = new SparqlJsonParser({ dataFactory: factory });
+      expect(() => noUndef.parseJsonBindings({ v: { type: 'seq', value: [ { type: 'undef' } ] } }))
+        .toThrow('The data factory has no undef()');
+    });
+  });
+
   describe('rdf-array sequences', () => {
     const parser = new SparqlJsonParser();
 

@@ -160,14 +160,31 @@ class SparqlJsonParser {
                 if (!this.dataFactory.sequence) {
                     throw new Error('The data factory has no sequence(): rdf-array needs rdf-data-factory-array');
                 }
-                value = this.dataFactory.sequence(rawValue.value.map((element) => this.parseJsonValue(element)));
+                value = this.dataFactory.sequence(rawValue.value.map((element) => this.parseJsonElement(element)));
                 break;
             }
+            case 'undef':
+                // rdf-undef: the empty slot is a member of a sequence, and no value of a binding or a triple
+                throw new Error(`Found undef outside a sequence: ${JSON.stringify(rawValue)}`);
             default:
                 value = this.dataFactory.namedNode(rawValue.value);
                 break;
         }
         return value;
+    }
+    /**
+     * Convert a member of a SPARQL JSON sequence: a term, or the empty slot of rdf-undef, `{ "type": "undef" }`.
+     * @param rawValue A member of a sequence's value.
+     * @return {RDF.SequenceElement} The term or slot.
+     */
+    parseJsonElement(rawValue) {
+        if (rawValue.type !== 'undef') {
+            return this.parseJsonValue(rawValue);
+        }
+        if (!this.dataFactory.undef) {
+            throw new Error('The data factory has no undef(): rdf-undef needs rdf-data-factory-array');
+        }
+        return this.dataFactory.undef();
     }
     /**
      * Convert a SPARQL JSON boolean response to a boolean.

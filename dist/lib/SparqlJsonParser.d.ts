@@ -46,6 +46,12 @@ export declare class SparqlJsonParser {
      */
     parseJsonValue(rawValue: any): RDF.Term;
     /**
+     * Convert a member of a SPARQL JSON sequence: a term, or the empty slot of rdf-undef, `{ "type": "undef" }`.
+     * @param rawValue A member of a sequence's value.
+     * @return {RDF.SequenceElement} The term or slot.
+     */
+    parseJsonElement(rawValue: any): RDF.SequenceElement;
+    /**
      * Convert a SPARQL JSON boolean response to a boolean.
      * This will throw an error if the given reponse was not a valid boolean response.
      * @param sparqlResponse A SPARQL JSON response.
